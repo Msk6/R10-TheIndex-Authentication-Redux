@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux"
+import {signup} from "./redux/actions"
+import { useHistory,Redirect } from "react-router-dom"
 
-const Signup = () => {
+const Signup = (props) => {
+  let history = useHistory()
+
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -13,11 +18,11 @@ const Signup = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert("I DON'T WORK YET");
+    props.signup(userData,history)
   };
 
   const { username, email, password } = userData;
-
+  if(props.user) return <Redirect to="/authors" />
   return (
     <div className="col-6 mx-auto">
       <div className="card my-5">
@@ -73,4 +78,20 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+const mapDispatchToProps = dispatch => {
+  return (
+    {
+      signup: (userData,history) => dispatch(signup(userData,history)),
+    }
+  )
+}
+
+const mapStateToProps = ({user}) => {
+  return (
+    {
+      user,
+    }
+  )
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Signup);

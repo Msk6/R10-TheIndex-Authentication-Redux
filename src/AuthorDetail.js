@@ -9,7 +9,7 @@ import AddBookModal from "./AddBookButton";
 import Loading from "./Loading";
 import ImageWithPlaceHolder from "./ImageWithPlaceHolder";
 
-const AuthorDetail = ({ authors, books, loading }) => {
+const AuthorDetail = ({ authors, books, loading, user }) => {
   const { authorID } = useParams();
 
   if (loading) return <Loading />;
@@ -34,16 +34,17 @@ const AuthorDetail = ({ authors, books, loading }) => {
         />
       </div>
       <BookTable books={authorBooks} />
-      <AddBookModal authorID={author.id} />
+      {user && <AddBookModal authorID={author.id} />}
     </div>
   );
 };
 
-const mapStateToProps = ({ authors, books }) => {
+const mapStateToProps = ({ authors, books, user }) => {
   return {
     authors,
     books,
     loading: !authors.length || !books.length,
+    user,
   };
 };
 

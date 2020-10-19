@@ -7,7 +7,7 @@ import AuthorCard from "./AuthorCard";
 import SearchBar from "./SearchBar";
 import Loading from "./Loading";
 
-const AuthorsList = ({ authors, loading }) => {
+const AuthorsList = ({ authors, loading, user }) => {
   const [query, setQuery] = useState("");
 
   const filterAuthors = () => {
@@ -32,16 +32,18 @@ const AuthorsList = ({ authors, loading }) => {
       <h3>Authors</h3>
       <SearchBar onChange={setQuery} />
       <div className="row">
-        <AddAuthorCard />
+
+        {user && <AddAuthorCard />}
         {authorCards}
       </div>
     </div>
   );
 };
 
-const mapStateToProps = ({ authors }) => ({
+const mapStateToProps = ({ authors, user }) => ({
   authors,
   loading: !authors.length,
+  user,
 });
 
 export default connect(mapStateToProps)(AuthorsList);
